@@ -1,0 +1,38 @@
+.login-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row-reverse;
+    max-width: 650px;
+    height: calc(100vh - 80px);
+    background-color: white;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+    margin: 20px auto;
+    border-radius: 12px;
+    padding-right: 100px;
+}
+
+.login-form {
+    width: 100%;
+    margin: auto;
+}
+
+.login-form p {
+    margin-left: 100px;
+}
+.login-form .form-title {
+    color: #333333;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 42px;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.login-form-button {
+    width: 100%;
+}
+.login-form-forgot {
+    float: right;
+}
