@@ -12,6 +12,7 @@ import { removeTokenFromCookie } from '../../hooks/cookies';
 function Workout() {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openEx, setOpenEx] = useState(false);
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState([]);
@@ -19,12 +20,14 @@ function Workout() {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
     const [quizData, setQuizData] = useState([]);
     const [exercise, setExercise] = useState([]);
+    const [selectedExercise, setSelectedExercise] = useState(null);
 
     useEffect(() => {
         axios
             .get('http://localhost:3000/quiz')
             .then((res) => {
                 setData(res.data);
+                console.log(res.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -42,40 +45,52 @@ function Workout() {
                 }
                 const exercises = res.data;
                 setExercise(exercises);
-                console.log('42: ', exercises);
+                console.log(exercises);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    const { questions, choices } = data[currentQuestion] || {};
+    const { qId, questions, answers } = data[currentQuestion] || {};
 
     const showModal = () => {
         setOpen(true);
     };
 
+    const showExercise = (e) => {
+        setSelectedExercise(e);
+        console.log('63:', selectedExercise);
+        setOpenEx(true);
+    };
+
     const handleOk = () => {
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setOpen(false);
-        }, 3000);
+
+        setOpen(false);
+        setOpenEx(false);
     };
 
     const handleCancel = () => {
         setOpen(false);
+        setOpenEx(false);
     };
     const onClickNext = () => {
         if (currentQuestion < data.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
+            setSelectedAnswerIndex(null);
         } else if (currentQuestion === data.length - 1) {
             handleFinish();
+            handleCancel();
         }
     };
 
     const onclickBack = () => {
-        setCurrentQuestion(currentQuestion - 1);
+        if (currentQuestion < data.length && currentQuestion > 0) {
+            setCurrentQuestion(currentQuestion - 1);
+        } else {
+            handleCancel();
+        }
     };
 
     const onAnswerSelected = (answer, index) => {
@@ -85,10 +100,12 @@ function Workout() {
             question: questions,
             answer: answer,
         };
-        if (newItem.question && newItem.question) {
-            setSelectedAnswer([...selectedAnswer, newItem]);
+        if (newItem.question && newItem.answer) {
+            // setSelectedAnswer([...selectedAnswer, newItem.question]);
+            setSelectedAnswer((prev) => ({ ...prev, [newItem.question]: newItem.answer }));
         }
     };
+
     let navigate = useNavigate();
 
     const [isLogin, setIsLogin] = useState(true);
@@ -152,18 +169,22 @@ function Workout() {
             <header id="header-inner">
                 <div className="container">
                     <nav id="main-nav">
-                        <img src="https://static.thenounproject.com/png/945288-200.png" alt="" id="logo" />
+                        <img
+                            src="https://www.erixlogan.com/wp-content/uploads/2019/10/DB-Logo-For-White-Background-300x228.png"
+                            alt=""
+                            id="logo"
+                        />
                         <ul>
                             <li>
-                                <a href>Home</a>
+                                <a href="/">Home</a>
                             </li>
                             <li>
                                 <a href className="current">
-                                    About
+                                    Program
                                 </a>
                             </li>
                             <li>
-                                <a href>Program</a>
+                                <a href>About</a>
                             </li>
                             <li className="drop">
                                 <Dropdown menu={{ items: profileItems }}>
@@ -194,15 +215,15 @@ function Workout() {
                     <h1>Quiz {currentQuestion + 1}</h1>
                     <p>{questions}</p>
                     <ul>
-                        {choices
-                            ? choices.map((choice, index) => {
+                        {answers
+                            ? answers.map((a, index) => {
                                   return (
                                       <li
-                                          onClick={() => onAnswerSelected(choice, index)}
-                                          key={choice}
+                                          onClick={() => onAnswerSelected(a.answer, index)}
+                                          key={index}
                                           className={selectedAnswerIndex === index ? 'selected-answer' : null}
                                       >
-                                          {choice}
+                                          {a.answer}
                                       </li>
                                   );
                               })
@@ -215,25 +236,61 @@ function Workout() {
                 <div class="container-grid">
                     <div class="workouts-container">
                         {exercise
-                            ? exercise.map((ex, key) => {
+                            ? exercise.map((ex, exkey) => {
                                   return (
-                                      <div class="card" key={key}>
-                                          <img
-                                              src="https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_1280.jpg"
-                                              alt=""
-                                          />
-                                          <div>
-                                              <div class="category category-gaine">{ex.muscleGroup.join('-')}</div>
+                                      <div key={exkey}>
+                                          {ex.mode_workouts[exkey]
+                                              ? ex.mode_workouts.map((m, mkey) => {
+                                                    return (
+                                                        <div className="group-card" key={mkey}>
+                                                            {m.exercises[mkey]
+                                                                ? m.exercises.map((e, key) => {
+                                                                      return (
+                                                                          <div class="card" key={key}>
+                                                                              <img
+                                                                                  src="https://cdn.pixabay.com/photo/2017/08/07/14/02/man-2604149_1280.jpg"
+                                                                                  alt=""
+                                                                              />
+                                                                              <h1>{e.exName}</h1>
 
-                                              <h3>
-                                                  <a href="#">
-                                                      <h1>{ex.exName}</h1>
-                                                      <h3>{ex.set + ' sets' + ' x ' + ex.rep + ' reps'}</h3>
-
-                                                      {ex.description}
-                                                  </a>
-                                              </h3>
-                                          </div>
+                                                                              <Button
+                                                                                  type="primary"
+                                                                                  onClick={() => showExercise(e)}
+                                                                              >
+                                                                                  Detail
+                                                                              </Button>
+                                                                              <Modal
+                                                                                  title="Basic Modal"
+                                                                                  open={openEx}
+                                                                                  onOk={handleOk}
+                                                                                  onCancel={handleCancel}
+                                                                              >
+                                                                                  <div>
+                                                                                      <div class="category category-gaine">
+                                                                                          {selectedExercise.muscleGroup.join(
+                                                                                              '-',
+                                                                                          )}
+                                                                                      </div>
+                                                                                      <h3>
+                                                                                          <h1>
+                                                                                              {selectedExercise.exName}
+                                                                                          </h1>
+                                                                                          <p>
+                                                                                              {
+                                                                                                  selectedExercise.description
+                                                                                              }
+                                                                                          </p>
+                                                                                      </h3>
+                                                                                  </div>
+                                                                              </Modal>
+                                                                          </div>
+                                                                      );
+                                                                  })
+                                                                : ''}
+                                                        </div>
+                                                    );
+                                                })
+                                              : ''}
                                       </div>
                                   );
                               })

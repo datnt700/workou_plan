@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('./index');
+const Exercise = require('../model/exercise.model');
 
 const Program = db.define(
   'workoutProgram',

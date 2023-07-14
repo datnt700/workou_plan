@@ -120,7 +120,7 @@ header {
     border-radius: 5px;
 }
 
-#workout-items .workouts-container {
+#workout-items .workouts-container .group-card {
     display: grid;
     /* repeat(số_cột_trên_dòng, độ_rộng_cột); */
     grid-template-columns: repeat(4, 1fr);

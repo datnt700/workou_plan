@@ -13,4 +13,4 @@ class AnswerController {
     }
   }
 }
-module.exports = new QuizController();
+module.exports = new AnswerController();

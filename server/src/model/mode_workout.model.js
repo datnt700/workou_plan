@@ -1,21 +1,21 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./index');
+const { Answer } = require('./answer.model');
 
-const Quiz = db.define(
-  'quiz',
+const Mode_Workout = db.define(
+  'mode_workout',
   {
-    qid: {
+    modeid: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
     },
-    questions: {
+    content: {
       type: DataTypes.STRING,
     },
   },
   {
-    tableName: 'quiz',
+    tableName: 'mode_workout',
   }
 );
 
-module.exports = Quiz;
+module.exports = Mode_Workout;

@@ -6,13 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserOutlined, SolutionOutlined, LockOutlined, TranslationOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { removeTokenFromCookie } from '../../hooks/cookies';
 import Login from '../auth/login';
-function Home({ login }) {
+import { getTokenFromCookie } from '../../hooks/cookies';
+function Home() {
     let navigate = useNavigate();
+    const token = getTokenFromCookie();
+    const [isLogin, setIsLogin] = useState(token ? false : true);
+    const [isLogout, setIsLogout] = useState(false);
 
-    const [isLogin, setIsLogin] = useState(true);
-    const [isLogout, setIsLogout] = useState(true);
-
-    console.log(isLogin);
     const logOut = () => {
         removeTokenFromCookie();
         console.log('LogOut Successfully');

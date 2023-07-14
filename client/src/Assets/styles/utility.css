@@ -87,3 +87,23 @@
 #main-footer .footer-container input[type='submit'] {
     width: 90%;
 } */
+
+.category {
+    display: inline-block;
+    color: #fff;
+    font-size: 1rem;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+    border-radius: 15px;
+    margin-bottom: 0.5rem;
+}
+
+.category-gaine {
+    background: var(--sports-color);
+}
+.category-lose {
+    background: var(--ent-color);
+}
+.category-flex {
+    background: var(--tech-color);
+}

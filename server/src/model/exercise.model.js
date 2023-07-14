@@ -2,9 +2,9 @@ const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./index');
 
 const Exercise = db.define(
-  'Exercise',
+  'exercise',
   {
-    exId: {
+    exid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -26,7 +26,7 @@ const Exercise = db.define(
     },
   },
   {
-    tableName: 'Exercise',
+    tableName: 'exercise',
   }
 );
 

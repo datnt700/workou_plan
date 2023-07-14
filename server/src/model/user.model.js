@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./index');
-
+const Program = require('../model/program.model');
 const User = db.define(
   'user',
   {
@@ -26,5 +26,7 @@ const User = db.define(
     tableName: 'users',
   }
 );
+
+User.belongsTo(Program);
 
 module.exports = User;
