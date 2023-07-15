@@ -50,24 +50,6 @@ class QuizController {
     } catch (error) {
       console.log('error: ', error);
     }
-
-    // for (const i in data) {
-    //   if (data[i] === 'lose weight') {
-    //     const ex = await Exercise.findAll({
-    //       where: {
-    //         exName: {
-    //           [Op.or]: ['jumping jacks', 'Push up'],
-    //         },
-    //       },
-    //     });
-    //     for (const j in ex) {
-    //       if (ex[j].dataValues) {
-    //         exercises.push(ex[j].dataValues);
-    //       }
-    //     }
-    //   }
-    // }
-    // return res.send(exercises);
   }
 }
 module.exports = new QuizController();

@@ -45,7 +45,6 @@ function Workout() {
                 }
                 const exercises = res.data;
                 setExercise(exercises);
-                console.log(exercises);
             })
             .catch((error) => {
                 console.log(error);
@@ -59,8 +58,8 @@ function Workout() {
     };
 
     const showExercise = (e) => {
+        console.log('63:', e);
         setSelectedExercise(e);
-        console.log('63:', selectedExercise);
         setOpenEx(true);
     };
 
@@ -253,40 +252,29 @@ function Workout() {
                                                                               />
                                                                               <h1>{e.exName}</h1>
 
-                                                                              <Button
-                                                                                  type="primary"
-                                                                                  onClick={() => showExercise(e)}
-                                                                              >
+                                                                              <Button onClick={() => showExercise(e)}>
                                                                                   Detail
                                                                               </Button>
-                                                                              <Modal
-                                                                                  title="Basic Modal"
-                                                                                  open={openEx}
-                                                                                  onOk={handleOk}
-                                                                                  onCancel={handleCancel}
-                                                                              >
-                                                                                  <div>
-                                                                                      <div class="category category-gaine">
-                                                                                          {selectedExercise.muscleGroup.join(
-                                                                                              '-',
-                                                                                          )}
-                                                                                      </div>
-                                                                                      <h3>
-                                                                                          <h1>
-                                                                                              {selectedExercise.exName}
-                                                                                          </h1>
-                                                                                          <p>
-                                                                                              {
-                                                                                                  selectedExercise.description
-                                                                                              }
-                                                                                          </p>
-                                                                                      </h3>
-                                                                                  </div>
-                                                                              </Modal>
                                                                           </div>
                                                                       );
                                                                   })
                                                                 : ''}
+                                                            <Modal
+                                                                title="Exercise Detail"
+                                                                open={openEx}
+                                                                onOk={handleOk}
+                                                                onCancel={handleCancel}
+                                                            >
+                                                                <div>
+                                                                    <div class="category category-gaine">
+                                                                        {selectedExercise?.muscleGroup.join('-')}
+                                                                    </div>
+                                                                    <h3>
+                                                                        <h1>{selectedExercise?.exName}</h1>
+                                                                        <p>{selectedExercise?.description}</p>
+                                                                    </h3>
+                                                                </div>
+                                                            </Modal>
                                                         </div>
                                                     );
                                                 })
